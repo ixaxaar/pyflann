@@ -24,7 +24,7 @@
 #(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 #THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from __future__ import with_statement
+
 
 from pyflann.exceptions import FLANNException
 import numpy
@@ -40,7 +40,7 @@ def check(filename):
 def save(dataset, filename):
     if not isinstance(dataset,numpy.ndarray):
         raise FLANNException("Dataset must be in numpy format")
-    
+
     with open(filename+".meta", 'w') as fd_meta:
         fd_meta.write(\
 """BINARY
@@ -52,8 +52,8 @@ def save(dataset, filename):
 
 
 def load(filename, rows = -1, cols = -1, dtype = numpy.float32):
-    
-    if os.path.isfile(filename+".meta"):        
+
+    if os.path.isfile(filename+".meta"):
         with open(filename+".meta","r") as fd:
             header = fd.readline()
             assert( header[0:6] == "BINARY")
@@ -62,8 +62,7 @@ def load(filename, rows = -1, cols = -1, dtype = numpy.float32):
             dtype = numpy.dtype(fd.readline().strip())
     else:
         if rows==-1 or cols==-1:
-            raise "No .meta file present, you must specify dataset rows, cols asd dtype"
+            raise Exception("No .meta file present, you must specify dataset rows, cols asd dtype")
     data = numpy.fromfile(file=filename, dtype=dtype, count=rows*cols)
     data.shape = (rows,cols)
     return data
-    
